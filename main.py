@@ -43,11 +43,11 @@ cursor = conn.cursor()
 cursor.execute(""" 
 CREATE TABLE IF NOT EXISTS store (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    store_name TEXT,
-    store_person1_name TEXT,
-    store_person2_name TEXT,
+    store_name TEXT NOT NULL UNIQUE,
     store_phone TEXT,
+    store_person1_name TEXT,
     store_person1phone TEXT,
+    store_person2_name TEXT,
     store_person2phone TEXT
 )
 """)
@@ -572,7 +572,6 @@ def create_ordr_registration_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى ملء كل الحقول"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -603,7 +602,6 @@ def create_ordr_registration_page(store_names, page):
                 title=ft.Text("نجاح"),
                 content=ft.Text("تم تسجيل الطلب بنجاح"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=green
@@ -620,7 +618,6 @@ def create_ordr_registration_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -639,7 +636,6 @@ def create_ordr_registration_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى إدخال اسم العميل واسم الصنف للحذف"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -657,7 +653,6 @@ def create_ordr_registration_page(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على العميل"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -677,7 +672,6 @@ def create_ordr_registration_page(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على الطلب للحذف"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -688,7 +682,6 @@ def create_ordr_registration_page(store_names, page):
                     title=ft.Text("نجاح"),
                     content=ft.Text("تم حذف الطلب بنجاح"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=green
@@ -707,7 +700,6 @@ def create_ordr_registration_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -830,7 +822,6 @@ def create_order_search_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى اختيار عميل"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -848,7 +839,6 @@ def create_order_search_page(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على العميل"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -883,7 +873,6 @@ def create_order_search_page(store_names, page):
                                         title=ft.Text("خطأ"),
                                         content=ft.Text(f"لم يتم العثور على الطلب '{item_name}'"),
                                         actions=[
-                                            ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                         ],
                                         actions_alignment=ft.MainAxisAlignment.END,
                                         bgcolor=red
@@ -894,7 +883,6 @@ def create_order_search_page(store_names, page):
                                         title=ft.Text("نجاح"),
                                         content=ft.Text(f"تم حذف الطلب '{item_name}' بنجاح"),
                                         actions=[
-                                            ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                         ],
                                         actions_alignment=ft.MainAxisAlignment.END,
                                         bgcolor=green
@@ -907,7 +895,6 @@ def create_order_search_page(store_names, page):
                                     title=ft.Text("خطأ"),
                                     content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                                     actions=[
-                                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                     ],
                                     actions_alignment=ft.MainAxisAlignment.END,
                                     bgcolor=red
@@ -942,7 +929,6 @@ def create_order_search_page(store_names, page):
                                 title=ft.Text("خطأ"),
                                 content=ft.Text("خاصية الاتصال مدعومة فقط على الهواتف"),
                                 actions=[
-                                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                 ],
                                 actions_alignment=ft.MainAxisAlignment.END,
                                 bgcolor=red
@@ -1000,7 +986,6 @@ def create_order_search_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1018,7 +1003,6 @@ def create_order_search_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى اختيار عميل"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1036,7 +1020,6 @@ def create_order_search_page(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على العميل"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -1054,7 +1037,6 @@ def create_order_search_page(store_names, page):
                 title=ft.Text("نجاح"),
                 content=ft.Text("تم حذف جميع طلبات العميل"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=green
@@ -1068,7 +1050,6 @@ def create_order_search_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1175,7 +1156,6 @@ def create_mcustomer_add_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى ملء كل الحقول"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1220,7 +1200,6 @@ def create_mcustomer_add_page(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text(f"الصنف '{item_name}' موجود بالفعل لهذا العميل"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -1241,7 +1220,6 @@ def create_mcustomer_add_page(store_names, page):
                 title=ft.Text("نجاح"),
                 content=ft.Text("تم إضافة الصنف إلى الفاتورة الشهرية بنجاح"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=green
@@ -1255,7 +1233,6 @@ def create_mcustomer_add_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1274,7 +1251,6 @@ def create_mcustomer_add_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى إدخال اسم العميل واسم الصنف للحذف"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1292,7 +1268,6 @@ def create_mcustomer_add_page(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على العميل"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -1312,7 +1287,6 @@ def create_mcustomer_add_page(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على الفاتورة للحذف"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -1323,7 +1297,6 @@ def create_mcustomer_add_page(store_names, page):
                     title=ft.Text("نجاح"),
                     content=ft.Text("تم حذف الفاتورة بنجاح"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=green
@@ -1339,7 +1312,6 @@ def create_mcustomer_add_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1455,7 +1427,6 @@ def create_mcustomer_serch_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى اختيار عميل"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1473,7 +1444,6 @@ def create_mcustomer_serch_page(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على العميل"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -1508,7 +1478,6 @@ def create_mcustomer_serch_page(store_names, page):
                                         title=ft.Text("خطأ"),
                                         content=ft.Text(f"لم يتم العثور على الفاتورة '{item_name}'"),
                                         actions=[
-                                            ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                         ],
                                         actions_alignment=ft.MainAxisAlignment.END,
                                         bgcolor=red
@@ -1519,7 +1488,6 @@ def create_mcustomer_serch_page(store_names, page):
                                         title=ft.Text("نجاح"),
                                         content=ft.Text(f"تم حذف الفاتورة '{item_name}' بنجاح"),
                                         actions=[
-                                            ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                         ],
                                         actions_alignment=ft.MainAxisAlignment.END,
                                         bgcolor=green
@@ -1532,7 +1500,6 @@ def create_mcustomer_serch_page(store_names, page):
                                     title=ft.Text("خطأ"),
                                     content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                                     actions=[
-                                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                     ],
                                     actions_alignment=ft.MainAxisAlignment.END,
                                     bgcolor=red
@@ -1597,7 +1564,6 @@ def create_mcustomer_serch_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1615,7 +1581,6 @@ def create_mcustomer_serch_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى اختيار عميل"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1633,7 +1598,6 @@ def create_mcustomer_serch_page(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على العميل"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -1651,7 +1615,6 @@ def create_mcustomer_serch_page(store_names, page):
                 title=ft.Text("نجاح"),
                 content=ft.Text("تم حذف جميع الفواتير الشهرية للعميل"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=green
@@ -1665,7 +1628,6 @@ def create_mcustomer_serch_page(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1782,7 +1744,6 @@ def create_page_add_item(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى ملء كل الحقول"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1803,7 +1764,6 @@ def create_page_add_item(store_names, page):
                 title=ft.Text("نجاح"),
                 content=ft.Text("تمت إضافة الصنف بنجاح"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=green
@@ -1819,7 +1779,6 @@ def create_page_add_item(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("لم يتم العثور على المخزن"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1839,7 +1798,6 @@ def create_page_add_item(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى ملء كل الحقول للحذف"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -1857,7 +1815,6 @@ def create_page_add_item(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على المخزن"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -1877,7 +1834,6 @@ def create_page_add_item(store_names, page):
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على الصنف للحذف"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
@@ -1888,7 +1844,6 @@ def create_page_add_item(store_names, page):
                     title=ft.Text("نجاح"),
                     content=ft.Text("تم حذف الصنف بنجاح"),
                     actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=green
@@ -1907,7 +1862,6 @@ def create_page_add_item(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -2034,7 +1988,6 @@ def create_page_view_orders(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى اختيار المخزن"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -2060,7 +2013,6 @@ def create_page_view_orders(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -2157,7 +2109,6 @@ def create_page_view_orders(store_names, page):
                                     title=ft.Text("خطأ"),
                                     content=ft.Text("لم يتم العثور على المخزن"),
                                     actions=[
-                                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                     ],
                                     actions_alignment=ft.MainAxisAlignment.END,
                                     bgcolor=red
@@ -2177,7 +2128,6 @@ def create_page_view_orders(store_names, page):
                                     title=ft.Text("خطأ"),
                                     content=ft.Text(f"لم يتم العثور على الصنف '{item_name}'"),
                                     actions=[
-                                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                     ],
                                     actions_alignment=ft.MainAxisAlignment.END,
                                     bgcolor=red
@@ -2188,7 +2138,6 @@ def create_page_view_orders(store_names, page):
                                     title=ft.Text("نجاح"),
                                     content=ft.Text(f"تم حذف الصنف '{item_name}' بنجاح"),
                                     actions=[
-                                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                     ],
                                     actions_alignment=ft.MainAxisAlignment.END,
                                     bgcolor=green
@@ -2201,7 +2150,6 @@ def create_page_view_orders(store_names, page):
                                 title=ft.Text("خطأ"),
                                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                                 actions=[
-                                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                                 ],
                                 actions_alignment=ft.MainAxisAlignment.END,
                                 bgcolor=red
@@ -2266,7 +2214,6 @@ def create_page_view_orders(store_names, page):
                 title=ft.Text("نجاح"),
                 content=ft.Text("تم حذف جميع الأصناف"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=green
@@ -2279,7 +2226,6 @@ def create_page_view_orders(store_names, page):
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
                 actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
                 ],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
@@ -2377,52 +2323,94 @@ def create_page_view_orders(store_names, page):
     )
     return page_content
  
+
 def create_page_stores_management(page, pages):
     def add_store_to_db(e, page, pages):
-        cursor.execute("""
-            INSERT INTO store (store_name, store_phone, store_person1_name, store_person1phone, store_person2_name, store_person2phone)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (
-            store_name.value,
-            store_phone.value,
-            person1_name.value,
-            person1_phone.value,
-            person2_name.value,
-            person2_phone.value
-        ))
-        conn.commit()
-        alert_dialog = ft.AlertDialog(
-            title=ft.Text("نجاح"),
-            content=ft.Text("تم إضافة المخزن بنجاح!"),
-            actions=[
-                ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
-            ],
-            actions_alignment=ft.MainAxisAlignment.END,
-            bgcolor=green
-        )
-        page.overlay.append(alert_dialog)
-        alert_dialog.open = True
+        # التحقق من أن اسم المخزن ليس فارغًا
+        if not store_name.value.strip():
+            alert_dialog = ft.AlertDialog(
+                title=ft.Text("خطأ"),
+                content=ft.Text("يرجى إدخال اسم المخزن"),
+                actions=[],
+                actions_alignment=ft.MainAxisAlignment.END,
+                bgcolor=red
+            )
+            page.overlay.append(alert_dialog)
+            alert_dialog.open = True
+            page.update()
+            return
 
-        # إعادة تعيين الحقول
-        store_name.value = ""
-        store_phone.value = ""
-        person1_name.value = ""
-        person1_phone.value = ""
-        person2_name.value = ""
-        person2_phone.value = ""
+        # التحقق من وجود اسم المخزن في قاعدة البيانات
+        cursor.execute("SELECT id FROM store WHERE store_name = ?", (store_name.value.strip(),))
+        if cursor.fetchone():
+            alert_dialog = ft.AlertDialog(
+                title=ft.Text("خطأ"),
+                content=ft.Text(f"اسم المخزن '{store_name.value}' موجود بالفعل! يرجى اختيار اسم آخر."),
+                actions=[],
+                actions_alignment=ft.MainAxisAlignment.END,
+                bgcolor=red
+            )
+            page.overlay.append(alert_dialog)
+            alert_dialog.open = True
+            page.update()
+            return
 
-        # تحديث قوائم المخازن
-        cursor.execute("SELECT store_name FROM store")
-        store_names = [row[0] for row in cursor.fetchall()]
-        store_names.insert(0, "اختر المخزن")
-        
-        # تحديث الصفحات
-        pages[0] = create_page_add_item(store_names, page)
-        pages[1] = create_page_view_orders(store_names, page)
-        
-        # إعادة تعيين المحتوى الحالي بناءً على الصفحة المختارة
-        content_container.content = pages[page.navigation_bar.selected_index]
-        page.update()
+        # إضافة المخزن إلى قاعدة البيانات
+        try:
+            cursor.execute("""
+                INSERT INTO store (store_name, store_phone, store_person1_name, store_person1phone, store_person2_name, store_person2phone)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (
+                store_name.value,
+                store_phone.value,
+                person1_name.value,
+                person1_phone.value,
+                person2_name.value,
+                person2_phone.value
+            ))
+            conn.commit()
+            alert_dialog = ft.AlertDialog(
+                title=ft.Text("نجاح"),
+                content=ft.Text("تم إضافة المخزن بنجاح!"),
+                actions=[],
+                actions_alignment=ft.MainAxisAlignment.END,
+                bgcolor=green
+            )
+            page.overlay.append(alert_dialog)
+            alert_dialog.open = True
+
+            # إعادة تعيين الحقول
+            store_name.value = ""
+            store_phone.value = ""
+            person1_name.value = ""
+            person1_phone.value = ""
+            person2_name.value = ""
+            person2_phone.value = ""
+
+            # تحديث قوائم المخازن
+            cursor.execute("SELECT store_name FROM store")
+            store_names = [row[0] for row in cursor.fetchall()]
+            store_names.insert(0, "اختر المخزن")
+            
+            # تحديث الصفحات
+            pages[0] = create_page_add_item(store_names, page)
+            pages[1] = create_page_view_orders(store_names, page)
+            
+            # إعادة تعيين المحتوى الحالي بناءً على الصفحة المختارة
+            content_container.content = pages[page.navigation_bar.selected_index]
+            page.update()
+
+        except sqlite3.Error as err:
+            alert_dialog = ft.AlertDialog(
+                title=ft.Text("خطأ"),
+                content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
+                actions=[],
+                actions_alignment=ft.MainAxisAlignment.END,
+                bgcolor=red
+            )
+            page.overlay.append(alert_dialog)
+            alert_dialog.open = True
+            page.update()
 
     def delete_store_from_db(e, page, pages):
         store_to_delete = store_name.value.strip()
@@ -2431,9 +2419,7 @@ def create_page_stores_management(page, pages):
             alert_dialog = ft.AlertDialog(
                 title=ft.Text("خطأ"),
                 content=ft.Text("يرجى إدخال اسم المخزن لحذفه"),
-                actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
-                ],
+                actions=[],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
             )
@@ -2449,9 +2435,7 @@ def create_page_stores_management(page, pages):
                 alert_dialog = ft.AlertDialog(
                     title=ft.Text("خطأ"),
                     content=ft.Text(f"لم يتم العثور على المخزن '{store_to_delete}'"),
-                    actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
-                    ],
+                    actions=[],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
                 )
@@ -2465,9 +2449,7 @@ def create_page_stores_management(page, pages):
                 alert_dialog = ft.AlertDialog(
                     title=ft.Text("خطأ"),
                     content=ft.Text(f"لم يتم حذف المخزن '{store_to_delete}'"),
-                    actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
-                    ],
+                    actions=[],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
                 )
@@ -2476,9 +2458,7 @@ def create_page_stores_management(page, pages):
                 alert_dialog = ft.AlertDialog(
                     title=ft.Text("نجاح"),
                     content=ft.Text(f"تم حذف المخزن '{store_to_delete}' وجميع الأصناف المرتبطة به بنجاح"),
-                    actions=[
-                        ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
-                    ],
+                    actions=[],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=green
                 )
@@ -2511,9 +2491,7 @@ def create_page_stores_management(page, pages):
             alert_dialog = ft.AlertDialog(
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
-                actions=[
-                    ft.TextButton("موافق", on_click=lambda e: page.overlay.pop() if page.overlay else None)
-                ],
+                actions=[],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
             )
@@ -2625,7 +2603,7 @@ def create_page_stores_management(page, pages):
         horizontal_alignment=CrossAxisAlignment.CENTER,
     )
     return page_content
- 
+
 def create_page_contact(page):
     main_rect = Container(
         expand=True,
@@ -2848,16 +2826,59 @@ def create_help_page(page: Page):
             ),
             Container(
                 content=Text(
-                    """
-صفحة "إضافة صنف":
-تتيح لك هذه الصفحة إضافة عنصر ناقص ترغب في تذكره لاحقًا ويمكنك حذف عنصر أيضا.
+                    """دليل صفحات تطبيق Orx
 
-صفحة "عرض المطلوب":
-تعرض لك قائمة العناصر التي تم إدخالها مع تفاصيل المخزن المرتبط بكل عنصر، لمساعدتك في المتابعة الدقيقة.
+يحتوي تطبيق Orx على مجموعة من الصفحات المصممة لتسهيل إدارة المخازن والأصناف والعملاء والفواتير. فيما يلي وصف وشرح لكل صفحة:
 
-صفحة "إضافة مخزن":
-من خلال هذه الصفحة يمكنك إضافة مخزن جديد لتخزين الأصناف، أو حذف مخزن لم تعد بحاجة إليه.
-                    """,
+صفحة إضافة صنف:
+
+تتيح لك هذه الصفحة إضافة عنصر جديد ترغب في تتبعه لاحقًا، مع إمكانية تحديد تفاصيل مثل اسم الصنف، الكمية، والمخزن المرتبط. يمكنك أيضًا حذف أي صنف لم تعد بحاجة إليه بسهولة.
+
+صفحة عرض المطلوب:
+
+تعرض هذه الصفحة قائمة بجميع الأصناف التي تم إدخالها، مع تفاصيل المخزن المرتبط بكل صنف. تساعدك هذه الصفحة في متابعة الأصناف بدقة ومراجعة حالة المخزون بسرعة.
+
+صفحة إضافة مخزن;
+
+تمكنك هذه الصفحة من إضافة مخزن جديد لتخزين الأصناف، مع تحديد اسم المخزن وتفاصيله. كما يمكنك حذف مخزن لم تعد بحاجة إليه، مما يسهل تنظيم المخازن.
+
+صفحة اطلب لعميل:
+
+توفر هذه الصفحة واجهة لإضافة طلبات جديدة (صنف ستوفره لعميل) . يمكنك أيضًا البحث عن عميل معين أو حذف بيانات عميل غير نشط.
+
+صفحة الفواتير الشهرية:
+
+تعرض هذه الصفحة قائمة بالفواتير الشهرية المسجلة (عميل يقوم بشراء منتجات ما بشكل دوري)، مع تفاصيل مثل اسم العميل، والأصناف المرتبطة. يمكنك إضافة فاتورة جديدة أو مراجعة الفواتير السابقة لتتبع المعاملات.
+
+صفحة تواصل معنا:
+
+تحتوي هذه الصفحة على روابط مباشرة للتواصل مع فريق الدعم عبر منصات مثل واتساب، فيسبوك، لينكدإن، أو البريد الإلكتروني. تتيح لك طلب المساعدة أو تقديم الاقتراحات بسهولة.
+
+صفحة حول التطبيق:
+
+تقدم هذه الصفحة معلومات أساسية عن تطبيق Orx، بما في ذلك الإصدار الحالي، الشركة المطورة (Salah Abdeldaim)، ومعلومات حقوق الطبع والنشر. تساعدك على فهم خلفية التطبيق.
+
+صفحة المساعدة:
+
+توفر هذه الصفحة إرشادات وأسئلة شائعة لتسهيل استخدام التطبيق. تحتوي على نصائح حول كيفية إضافة الأصناف، إدارة المخازن، أو حل المشكلات الشائعة.
+
+
+
+ملاحظات:
+
+
+
+
+
+- جميع الصفحات تدعم اللغة العربية بشكل كامل مع واجهة مستخدم بسيطة وسهلة الاستخدام.
+
+
+
+- يمكن التنقل بين الصفحات باستخدام شريط التنقل السفلي أو قائمة الخيارات.
+
+
+
+- للحصول على دعم إضافي، راجع صفحة "تواصل معنا" أو "المساعدة".""",
                     size=18,
                     text_align="right"
                 ),
