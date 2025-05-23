@@ -2324,6 +2324,16 @@ def create_page_view_orders(store_names, page):
     return page_content
  
 
+
+
+# دالة مساعدة لتحديث قوائم المخازن
+def update_store_names(cursor):
+    cursor.execute("SELECT store_name FROM store")
+    store_names = [row[0] for row in cursor.fetchall()]
+    store_names.insert(0, "اختر المخزن")
+    return store_names
+
+# تعديل دالة create_page_stores_management
 def create_page_stores_management(page, pages):
     def add_store_to_db(e, page, pages):
         # التحقق من أن اسم المخزن ليس فارغًا
@@ -2388,13 +2398,12 @@ def create_page_stores_management(page, pages):
             person2_phone.value = ""
 
             # تحديث قوائم المخازن
-            cursor.execute("SELECT store_name FROM store")
-            store_names = [row[0] for row in cursor.fetchall()]
-            store_names.insert(0, "اختر المخزن")
+            store_names = update_store_names(cursor)
             
             # تحديث الصفحات
-            pages[0] = create_page_add_item(store_names, page)
+            pages[0] = create_home_page(store_names, page)  # الحفاظ على الصفحة الرئيسية
             pages[1] = create_page_view_orders(store_names, page)
+            pages[2] = create_page_stores_management(page, pages)  # إعادة إنشاء صفحة إدارة المخازن
             
             # إعادة تعيين المحتوى الحالي بناءً على الصفحة المختارة
             content_container.content = pages[page.navigation_bar.selected_index]
@@ -2472,13 +2481,12 @@ def create_page_stores_management(page, pages):
                 person2_phone.value = ""
 
                 # تحديث قوائم المخازن
-                cursor.execute("SELECT store_name FROM store")
-                store_names = [row[0] for row in cursor.fetchall()]
-                store_names.insert(0, "اختر المخزن")
+                store_names = update_store_names(cursor)
                 
                 # تحديث الصفحات
-                pages[0] = create_page_add_item(store_names, page)
+                pages[0] = create_home_page(store_names, page)  # الحفاظ على الصفحة الرئيسية
                 pages[1] = create_page_view_orders(store_names, page)
+                pages[2] = create_page_stores_management(page, pages)  # إعادة إنشاء صفحة إدارة المخازن
                 
                 # إعادة تعيين المحتوى الحالي بناءً على الصفحة المختارة
                 content_container.content = pages[page.navigation_bar.selected_index]
