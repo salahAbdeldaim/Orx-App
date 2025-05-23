@@ -22,9 +22,9 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 
 # دالة للحصول على مسار قاعدة بيانات قابلة للكتابة
 def get_writable_db_path(base_path):
-    data_dir = os.path.join(base_path, "data")
-    writable_path = os.path.join(data_dir, "data.db")
-    asset_db_path = os.path.join(base_path, "assets", "data.db")
+    data_dir = os.path.join(base_path, "Orx_data")
+    writable_path = os.path.join(data_dir, "Orx_data.db")
+    asset_db_path = os.path.join(base_path, "assets", "Orx_data.db")
     
     os.makedirs(data_dir, exist_ok=True)
     
