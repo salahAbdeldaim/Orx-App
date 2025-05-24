@@ -120,6 +120,9 @@ user_time = os.path.join(base_path, "assets", "user_time.png")
 searching_icon = os.path.join(base_path, "assets", "searching.png")
 add_icon = os.path.join(base_path, "assets", "add.png")
 search_person_icon = os.path.join(base_path, "assets", "search_person.png")
+display_item = os.path.join(base_path, "assets", "display_case.png")
+home = os.path.join(base_path, "assets", "home1.gif")
+
 
 # دوال مساعدة
 def dropdown_changed(e, page):
@@ -179,8 +182,6 @@ item_name = TextField(
 
 def create_home_page(store_names,page):
 
-    
-        
     btn1 = Container(
         width=310,
         height=165,
@@ -284,7 +285,7 @@ def create_ordr_registration_home_page(store_names, page):
         content=Row(
             [
                 Text(
-                    "الفواتير الشهرية!",
+                    "طلب منتج لعميل!",
                     color=white,
                     size=24,
                     weight=FontWeight.BOLD,
@@ -429,7 +430,7 @@ def create_add_item_home_page(store_names,page):
         alignment=alignment.center,
         content=TextButton(content=Row(controls=[
                         Text("عرض الاصناف المطلوبة!", size=18, weight=FontWeight.BOLD, color=brown),
-                        Image(user_time,width=100,height=100, color=brown),],alignment="center",),
+                        Image(display_item,width=100,height=100, color=brown),],alignment="center",),
                          
 
                         width=300,
@@ -629,14 +630,12 @@ def create_ordr_registration_page(store_names, page):
 
     def delete_order(e, page):
         customer_name = person_name_ask.value.strip()
-        item_name = item_type_ask.value.strip()
 
-        if not all([customer_name, item_name]):
+        if not customer_name:
             alert_dialog = ft.AlertDialog(
                 title=ft.Text("خطأ"),
-                content=ft.Text("يرجى إدخال اسم العميل واسم الصنف للحذف"),
-                actions=[
-                ],
+                content=ft.Text("يرجى إدخال اسم العميل للحذف"),
+                actions=[],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
             )
@@ -652,8 +651,7 @@ def create_ordr_registration_page(store_names, page):
                 alert_dialog = ft.AlertDialog(
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على العميل"),
-                    actions=[
-                    ],
+                    actions=[],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
                 )
@@ -663,37 +661,45 @@ def create_ordr_registration_page(store_names, page):
                 return
 
             customer_id = result[0]
-            cursor.execute(
-                "DELETE FROM customersIemOrder WHERE customer_id = ? AND item_name = ?",
-                (customer_id, item_name)
+
+            # حذف الطلبات المرتبطة بالعميل
+            cursor.execute("DELETE FROM customersIemOrder WHERE customer_id = ?", (customer_id,))
+
+            # حذف العميل نفسه
+            cursor.execute("DELETE FROM customers WHERE id = ?", (customer_id,))
+
+            conn.commit()
+
+            alert_dialog = ft.AlertDialog(
+                title=ft.Text("نجاح"),
+                content=ft.Text("تم حذف العميل وجميع طلباته بنجاح"),
+                actions=[],
+                actions_alignment=ft.MainAxisAlignment.END,
+                bgcolor=green
             )
-            if cursor.rowcount == 0:
-                alert_dialog = ft.AlertDialog(
-                    title=ft.Text("خطأ"),
-                    content=ft.Text("لم يتم العثور على الطلب للحذف"),
-                    actions=[
-                    ],
-                    actions_alignment=ft.MainAxisAlignment.END,
-                    bgcolor=red
-                )
-            else:
-                conn.commit()
-                alert_dialog = ft.AlertDialog(
-                    title=ft.Text("نجاح"),
-                    content=ft.Text("تم حذف الطلب بنجاح"),
-                    actions=[
-                    ],
-                    actions_alignment=ft.MainAxisAlignment.END,
-                    bgcolor=green
-                )
-                person_name_ask.value = ""
-                person_phone_ask.value = ""
-                date_dropdown.value = days_of_week[0]
-                item_type_ask.value = ""
+
+            # إعادة تعيين الحقول
+            person_name_ask.value = ""
+            person_phone_ask.value = ""
+            date_dropdown.value = days_of_week[0]
+            item_type_ask.value = ""
 
             page.overlay.append(alert_dialog)
             alert_dialog.open = True
             page.update()
+
+        except Exception as ex:
+            alert_dialog = ft.AlertDialog(
+                title=ft.Text("خطأ"),
+                content=ft.Text(f"حدث خطأ أثناء الحذف: {str(ex)}"),
+                actions=[],
+                actions_alignment=ft.MainAxisAlignment.END,
+                bgcolor=red
+            )
+            page.overlay.append(alert_dialog)
+            alert_dialog.open = True
+            page.update()
+
 
         except sqlite3.Error as err:
             alert_dialog = ft.AlertDialog(
@@ -780,7 +786,7 @@ def create_ordr_registration_page(store_names, page):
     )
 
     b2 = ElevatedButton(
-        content=Text("حذف", size=18, weight=FontWeight.BOLD),
+        content=Text("حذف العميل", size=18, weight=FontWeight.BOLD),
         width=150,
         style=ButtonStyle(bgcolor=blue, color=white, padding=15),
         on_click=lambda e: delete_order(e, page),
@@ -1244,14 +1250,12 @@ def create_mcustomer_add_page(store_names, page):
 
     def delete_mcustomer(e, page):
         customer_name = person_name_m.value.strip()
-        item_name = item_type_m.value.strip()
 
-        if not all([customer_name, item_name]):
+        if not customer_name:
             alert_dialog = ft.AlertDialog(
                 title=ft.Text("خطأ"),
-                content=ft.Text("يرجى إدخال اسم العميل واسم الصنف للحذف"),
-                actions=[
-                ],
+                content=ft.Text("يرجى إدخال اسم العميل للحذف"),
+                actions=[],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
             )
@@ -1261,14 +1265,14 @@ def create_mcustomer_add_page(store_names, page):
             return
 
         try:
+            # البحث عن العميل
             cursor.execute("SELECT id FROM monthlyCustomers WHERE m_customer_name = ?", (customer_name,))
             result = cursor.fetchone()
             if not result:
                 alert_dialog = ft.AlertDialog(
                     title=ft.Text("خطأ"),
                     content=ft.Text("لم يتم العثور على العميل"),
-                    actions=[
-                    ],
+                    actions=[],
                     actions_alignment=ft.MainAxisAlignment.END,
                     bgcolor=red
                 )
@@ -1278,30 +1282,26 @@ def create_mcustomer_add_page(store_names, page):
                 return
 
             customer_id = result[0]
-            cursor.execute(
-                "DELETE FROM mCustomersIemOrder WHERE m_customer_id = ? AND m_item_name = ?",
-                (customer_id, item_name)
+
+            # حذف كل الطلبات المرتبطة بالعميل
+            cursor.execute("DELETE FROM mCustomersIemOrder WHERE m_customer_id = ?", (customer_id,))
+
+            # حذف العميل من جدول العملاء الشهريين
+            cursor.execute("DELETE FROM monthlyCustomers WHERE id = ?", (customer_id,))
+
+            conn.commit()
+
+            alert_dialog = ft.AlertDialog(
+                title=ft.Text("نجاح"),
+                content=ft.Text("تم حذف العميل والفاتورة الخاصة به بنجاح   "),
+                actions=[],
+                actions_alignment=ft.MainAxisAlignment.END,
+                bgcolor=green
             )
-            if cursor.rowcount == 0:
-                alert_dialog = ft.AlertDialog(
-                    title=ft.Text("خطأ"),
-                    content=ft.Text("لم يتم العثور على الفاتورة للحذف"),
-                    actions=[
-                    ],
-                    actions_alignment=ft.MainAxisAlignment.END,
-                    bgcolor=red
-                )
-            else:
-                conn.commit()
-                alert_dialog = ft.AlertDialog(
-                    title=ft.Text("نجاح"),
-                    content=ft.Text("تم حذف الفاتورة بنجاح"),
-                    actions=[
-                    ],
-                    actions_alignment=ft.MainAxisAlignment.END,
-                    bgcolor=green
-                )
-                item_type_m.value = ""  # مسح حقل الصنف فقط
+
+            # إعادة تعيين الحقول
+            person_name_m.value = ""
+            item_type_m.value = ""
 
             page.overlay.append(alert_dialog)
             alert_dialog.open = True
@@ -1311,14 +1311,14 @@ def create_mcustomer_add_page(store_names, page):
             alert_dialog = ft.AlertDialog(
                 title=ft.Text("خطأ"),
                 content=ft.Text(f"خطأ في قاعدة البيانات: {err}"),
-                actions=[
-                ],
+                actions=[],
                 actions_alignment=ft.MainAxisAlignment.END,
                 bgcolor=red
             )
             page.overlay.append(alert_dialog)
             alert_dialog.open = True
             page.update()
+
 
     main_rect = Container(
         expand=True,
@@ -1385,7 +1385,7 @@ def create_mcustomer_add_page(store_names, page):
     )
 
     b2 = ElevatedButton(
-        content=Text("حذف", size=18, weight=FontWeight.BOLD),
+        content=Text("حذف العميل", size=18, weight=FontWeight.BOLD),
         width=150,
         style=ButtonStyle(bgcolor=blue, color=white, padding=15),
         on_click=lambda e: delete_mcustomer(e, page),
@@ -2613,16 +2613,19 @@ def create_page_stores_management(page, pages):
     return page_content
 
 def create_page_contact(page):
+
+
     main_rect = Container(
         expand=True,
         width=345,
-        height=450,
+        height=500,
         bgcolor=gray,
         border_radius=24,
         alignment=alignment.center,
         margin=margin.only(top=100),
         content=Column(
             controls=[
+                Image(home,border_radius=24,width=320, fit=ImageFit.COVER),
                 Container(
                     width=320,
                     height=45,
@@ -2735,7 +2738,7 @@ def create_page_contact(page):
                     )
                 ),
             ],
-            spacing=55,
+            spacing=25,
             alignment=MainAxisAlignment.CENTER,
         )
     )
@@ -2846,7 +2849,7 @@ def create_help_page(page: Page):
 
 تعرض هذه الصفحة قائمة بجميع الأصناف التي تم إدخالها، مع تفاصيل المخزن المرتبط بكل صنف. تساعدك هذه الصفحة في متابعة الأصناف بدقة ومراجعة حالة المخزون بسرعة.
 
-صفحة إضافة مخزن;
+صفحة إضافة مخزن:
 
 تمكنك هذه الصفحة من إضافة مخزن جديد لتخزين الأصناف، مع تحديد اسم المخزن وتفاصيله. كما يمكنك حذف مخزن لم تعد بحاجة إليه، مما يسهل تنظيم المخازن.
 
